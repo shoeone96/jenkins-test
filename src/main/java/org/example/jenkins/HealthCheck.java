@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthCheck {
-    
+
     @GetMapping
     public ResponseEntity<String> checkFine(@RequestParam(required = false) String word){
         if(Objects.isNull(word)){
