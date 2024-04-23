@@ -2,6 +2,7 @@ name: Deploy dev API to NCP
 
 on:
   workflow_dispatch:
+  push: {main}
 
 jobs:
   job:
