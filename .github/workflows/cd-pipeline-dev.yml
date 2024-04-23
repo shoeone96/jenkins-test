@@ -41,7 +41,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "jenkins-0.0.1-SNAPSHOT.jar"
           target: "~"
-      - name: SSH-deploy
+
+      - name: 전송된 jar 파일로 서버 재구동
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
