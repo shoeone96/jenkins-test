@@ -18,4 +18,13 @@ public class HealthCheck {
         return ResponseEntity.ok("this is what you give me" + word);
     }
 
+    @GetMapping("/updated")
+    public ResponseEntity<String> checkFine2(@RequestParam(required = false) String word){
+        if(Objects.isNull(word)){
+            return ResponseEntity.ok("updated");
+        }
+
+        return ResponseEntity.ok("this is what you give me" + word);
+    }
+
 }
