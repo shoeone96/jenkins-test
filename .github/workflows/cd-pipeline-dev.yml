@@ -50,4 +50,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             chmod +x deploy.sh
-            deploy.sh
+            ./deploy.sh
