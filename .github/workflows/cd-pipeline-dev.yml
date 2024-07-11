@@ -52,6 +52,15 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: "jenkins-0.0.1-SNAPSHOT.jar"
           target: "~/docker/server"
+
+
+      - name: docker 재실행
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             chmod +x deploy-docker.sh
             ./deploy-docker.sh
