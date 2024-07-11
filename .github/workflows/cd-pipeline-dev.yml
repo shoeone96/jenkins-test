@@ -31,7 +31,7 @@ jobs:
 
       - name: Prepare Files
         run: |
-          cp build/libs/Bbangle-0.0.1-SNAPSHOT.jar ./
+          cp build/libs/jenkins-0.0.1-SNAPSHOT.jar ./
 
       - name: 기존 jar 파일 삭제
         uses: appleboy/ssh-action@master
