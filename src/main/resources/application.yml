@@ -1,2 +1,6 @@
-server:
-  port: 7999
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: test
+    password: test
+    url: jdbc:mysql://mysql:3306/test

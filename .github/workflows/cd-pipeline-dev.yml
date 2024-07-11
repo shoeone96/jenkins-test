@@ -1,14 +1,15 @@
-name: Deploy dev API to NCP
+name: Dev 서버 CD 파이프라인
 
 on:
   workflow_dispatch:
-  push: {main}
+  push:
+    branches:
+      - main
 
 jobs:
   job:
-    name: Deploy dev API
+    name: main 배포 테스트
     runs-on: ubuntu-latest
-    environment: dev
     steps:
       - name: 체크 아웃
         uses: actions/checkout@v3
@@ -22,7 +23,7 @@ jobs:
       - name: application.yml 정보 넣기
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_YML_AWS }}" | base64 --decode > src/main/resources/application.yml
           find src
 
       - name: build 실행
@@ -30,25 +31,27 @@ jobs:
 
       - name: Prepare Files
         run: |
-          cp build/libs/jenkins-0.0.1-SNAPSHOT.jar ./
+          cp build/libs/Bbangle-0.0.1-SNAPSHOT.jar ./
 
-      - name: jar 파일 운영 서버 전송
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "jenkins-0.0.1-SNAPSHOT.jar"
-          target: "~"
-
-      - name: 전송된 jar 파일로 서버 재구동
+      - name: 기존 jar 파일 삭제
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            chmod +x deploy.sh
-            ./deploy.sh
+            rm -f ~/docker/server/Bbangle-0.0.1-SNAPSHOT.jar
+
+      - name: jar 파일 운영 서버 전송 및 재실행
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "Bbangle-0.0.1-SNAPSHOT.jar"
+          target: "~/docker/server"
+          script: |
+            chmod +x deploy-docker.sh
+            ./deploy-docker.sh
