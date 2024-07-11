@@ -18,7 +18,7 @@ public class HealthCheck {
         return ResponseEntity.ok("this is what you give me" + word);
     }
 
-    @GetMapping("/updated")
+    @GetMapping("/updated-now")
     public ResponseEntity<String> checkFine2(@RequestParam(required = false) String word){
         if(Objects.isNull(word)){
             return ResponseEntity.ok("updated");
